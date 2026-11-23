@@ -46,9 +46,9 @@ jobs:
           password: ${{ secrets.MAIL_PASSWORD }}
           from: Padel screenshot <${{ secrets.MAIL_FROM }}>
           to: ${{ secrets.MAIL_TO }}
-          subject: Plaza Padel Enschede beschikbaarheid ${{ steps.dt.outputs.date }}
+          subject: Padel Casa Enschede beschikbaarheid ${{ steps.dt.outputs.date }}
           body: |
-            Dit is de dagelijkse capture van de baanbeschikbaarheid bij Plaza Padel Enschede, gemaakt om ${{ steps.dt.outputs.time }} uur.
+            Dit is de dagelijkse capture van de baanbeschikbaarheid bij Padel Casa Enschede, gemaakt om ${{ steps.dt.outputs.time }} uur.
             De vrije tijdsloten voor vanavond staan in de bijgevoegde screenshot.
             Pagina: https://www.padelcasa.com/pages/enschede#/court-booking
           attachments: plaza-padel-availability-${{ steps.dt.outputs.date }}.png
@@ -64,8 +64,8 @@ jobs:
           password: ${{ secrets.MAIL_PASSWORD }}
           from: Padel screenshot <${{ secrets.MAIL_FROM }}>
           to: ${{ secrets.MAIL_TO }}
-          subject: Plaza Padel Enschede beschikbaarheid ${{ steps.dt.outputs.date }} (mislukt)
+          subject: Padel Casa Enschede beschikbaarheid ${{ steps.dt.outputs.date }} (mislukt)
           body: |
-            De dagelijkse screenshot van Plaza Padel Enschede is vandaag (${{ steps.dt.outputs.time }} uur) mislukt.
+            De dagelijkse screenshot van Padel Casa Enschede is vandaag (${{ steps.dt.outputs.time }} uur) mislukt.
             Zie de log op ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
             Pagina: https://www.padelcasa.com/pages/enschede#/court-booking

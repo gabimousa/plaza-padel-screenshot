@@ -55,8 +55,8 @@ async function sendMail(subject, text, attachment) {
   const time = amsterdam({ hour: '2-digit', minute: '2-digit' });
   if (ok) {
     await sendMail(
-      `Plaza Padel Enschede beschikbaarheid ${date}`,
-      `Dit is de dagelijkse capture van de baanbeschikbaarheid bij Plaza Padel Enschede, gemaakt om ${time} uur.\n` +
+      `Padel Casa Enschede beschikbaarheid ${date}`,
+      `Dit is de dagelijkse capture van de baanbeschikbaarheid bij Padel Casa Enschede, gemaakt om ${time} uur.\n` +
         `De vrije tijdsloten voor vanavond staan in de bijgevoegde screenshot.\nPagina: ${PAGE}`,
       file
     );
@@ -64,8 +64,8 @@ async function sendMail(subject, text, attachment) {
     console.log('Mail met screenshot verstuurd.');
   } else {
     await sendMail(
-      `Plaza Padel Enschede beschikbaarheid ${date} (mislukt)`,
-      `De dagelijkse screenshot van Plaza Padel Enschede is vandaag (${time} uur) na ${ATTEMPTS} pogingen mislukt.\nPagina: ${PAGE}`
+      `Padel Casa Enschede beschikbaarheid ${date} (mislukt)`,
+      `De dagelijkse screenshot van Padel Casa Enschede is vandaag (${time} uur) na ${ATTEMPTS} pogingen mislukt.\nPagina: ${PAGE}`
     );
     console.log('Mail over mislukte capture verstuurd.');
     process.exit(1);
