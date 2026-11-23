@@ -44,6 +44,12 @@ const out = process.argv[2] || 'screenshot.png';
     } catch (_) {}
   }
 
+  // Padel Casa gebruikt Cookiebot zonder weigerknop op het eerste scherm: verberg de melding
+  // (zonder toestemming te geven), zodat ze niet over de tijdsloten heen staat.
+  await page.addStyleTag({
+    content: '#CybotCookiebotDialog, #CybotCookiebotDialogBodyUnderlay { display: none !important; }',
+  });
+
   // Wacht tot de beschikbaarheid geladen is (de tekst "Loading" verdwijnt), max. 30 s.
   try {
     await page.waitForFunction(
