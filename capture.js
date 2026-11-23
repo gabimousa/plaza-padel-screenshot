@@ -61,8 +61,7 @@ const out = process.argv[2] || 'screenshot.png';
     console.log('Waarschuwing: "Loading" bleef zichtbaar; screenshot wordt toch gemaakt.');
   }
   await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
-  // Extra wachttijd: de beschikbaarheid verschijnt pas enkele seconden na het laden.
-  await page.waitForTimeout(10000);
+  await page.waitForTimeout(3000);
 
   await page.screenshot({ path: out, fullPage: true });
   console.log('Screenshot opgeslagen:', out);
