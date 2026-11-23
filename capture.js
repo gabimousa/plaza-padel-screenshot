@@ -15,7 +15,11 @@ const out = process.argv[2] || 'screenshot.png';
   });
   const page = await context.newPage();
 
-  await page.goto(URL, { waitUntil: 'domcontentloaded', timeout: 60000 });
+  const response = await page.goto(URL, { waitUntil: 'domcontentloaded', timeout: 60000 });
+  // Een foutpagina (bijv. 403 van Playtomic) is geen geldige screenshot: stop met een fout.
+  if (!response || response.status() >= 400) {
+    throw new Error(`Playtomic gaf HTTP ${response ? response.status() : 'geen antwoord'}`);
+  }
   await page.waitForTimeout(4000);
 
   // Cookiebanner: kies de meest privacyvriendelijke optie (weigeren / alleen noodzakelijk).
