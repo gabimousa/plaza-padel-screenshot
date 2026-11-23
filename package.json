@@ -1,0 +1,9 @@
+{
+  "name": "plaza-padel-screenshot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dagelijkse screenshot van de baanbeschikbaarheid van Plaza Padel Enschede",
+  "dependencies": {
+    "playwright": "1.48.2"
+  }
+}

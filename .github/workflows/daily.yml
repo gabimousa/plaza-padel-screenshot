@@ -1,0 +1,83 @@
+name: Dagelijkse padel-screenshot
+
+on:
+  schedule:
+    # GitHub gebruikt UTC: 16:17 UTC = 17:17 in de winter, 18:17 in de zomer.
+    - cron: '17 16 * * *'
+  workflow_dispatch: {}   # handmatig starten via het tabblad Actions
+
+permissions:
+  contents: write   # alleen nodig voor de maandelijkse "keepalive"-commit hieronder
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Playwright installeren
+        run: |
+          npm install
+          npx playwright install --with-deps chromium
+
+      - name: Datum en tijd (Amsterdam)
+        id: dt
+        run: |
+          echo "date=$(TZ=Europe/Amsterdam date +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+          echo "time=$(TZ=Europe/Amsterdam date +%H:%M)" >> "$GITHUB_OUTPUT"
+
+      - name: Screenshot maken
+        id: shot
+        continue-on-error: true
+        run: node capture.js "plaza-padel-availability-${{ steps.dt.outputs.date }}.png"
+
+      - name: Mail met screenshot
+        if: steps.shot.outcome == 'success'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          from: Padel screenshot <${{ secrets.MAIL_USERNAME }}>
+          to: ${{ secrets.MAIL_TO }}
+          subject: Plaza Padel Enschede beschikbaarheid ${{ steps.dt.outputs.date }}
+          body: |
+            Dit is de dagelijkse capture van de baanbeschikbaarheid bij Plaza Padel Enschede, gemaakt om ${{ steps.dt.outputs.time }} uur.
+            De vrije tijdsloten voor vanavond staan in de bijgevoegde screenshot.
+            Pagina: https://playtomic.com/clubs/plaza-padel-enschede
+          attachments: plaza-padel-availability-${{ steps.dt.outputs.date }}.png
+
+      - name: Mail bij fout
+        if: steps.shot.outcome != 'success'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          from: Padel screenshot <${{ secrets.MAIL_USERNAME }}>
+          to: ${{ secrets.MAIL_TO }}
+          subject: Plaza Padel Enschede beschikbaarheid ${{ steps.dt.outputs.date }} (mislukt)
+          body: |
+            De dagelijkse screenshot van Plaza Padel Enschede is vandaag (${{ steps.dt.outputs.time }} uur) mislukt.
+            Zie de log op ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            Pagina: https://playtomic.com/clubs/plaza-padel-enschede
+
+      # GitHub zet geplande workflows in openbare repo's uit na 60 dagen zonder activiteit.
+      # Daarom op de 1e van de maand een lege commit, zodat de repo "actief" blijft.
+      - name: Keepalive (1e van de maand)
+        run: |
+          if [ "$(date +%d)" = "01" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit --allow-empty -m "keepalive"
+            git push
+          fi

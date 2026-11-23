@@ -1,0 +1,62 @@
+// Maakt een screenshot van de baanbeschikbaarheid van Plaza Padel Enschede op Playtomic.
+// Gebruik: node capture.js <uitvoerbestand.png>
+const { chromium } = require('playwright');
+
+const URL = 'https://playtomic.com/clubs/plaza-padel-enschede';
+const out = process.argv[2] || 'screenshot.png';
+
+(async () => {
+  const browser = await chromium.launch();
+  const context = await browser.newContext({
+    viewport: { width: 1400, height: 1000 },
+    deviceScaleFactor: 2,
+    locale: 'nl-NL',
+    timezoneId: 'Europe/Amsterdam',
+  });
+  const page = await context.newPage();
+
+  await page.goto(URL, { waitUntil: 'domcontentloaded', timeout: 60000 });
+  await page.waitForTimeout(4000);
+
+  // Cookiebanner: kies de meest privacyvriendelijke optie (weigeren / alleen noodzakelijk).
+  const rejectButtons = [
+    '#onetrust-reject-all-handler',
+    'button:has-text("Alles weigeren")',
+    'button:has-text("Weigeren")',
+    'button:has-text("Reject all")',
+    'button:has-text("Reject")',
+    'button:has-text("Decline")',
+    'button:has-text("Alleen noodzakelijk")',
+    'button:has-text("Only necessary")',
+  ];
+  for (const sel of rejectButtons) {
+    try {
+      const b = page.locator(sel).first();
+      if (await b.isVisible({ timeout: 1000 })) {
+        await b.click();
+        console.log('Cookiebanner gesloten met:', sel);
+        break;
+      }
+    } catch (_) {}
+  }
+
+  // Wacht tot de beschikbaarheid geladen is (de tekst "Loading" verdwijnt), max. 30 s.
+  try {
+    await page.waitForFunction(
+      () => !/Loading…|Loading\.\.\.|Laden…/.test(document.body.innerText),
+      null,
+      { timeout: 30000 }
+    );
+  } catch (_) {
+    console.log('Waarschuwing: "Loading" bleef zichtbaar; screenshot wordt toch gemaakt.');
+  }
+  await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
+  await page.waitForTimeout(3000);
+
+  await page.screenshot({ path: out, fullPage: true });
+  console.log('Screenshot opgeslagen:', out);
+  await browser.close();
+})().catch((e) => {
+  console.error('Fout:', e.message);
+  process.exit(1);
+});
