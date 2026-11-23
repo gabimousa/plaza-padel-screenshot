@@ -6,8 +6,8 @@ en mailt die als bijlage.
 
 Benodigde secrets (Settings → Secrets and variables → Actions):
 
-- `MAIL_USERNAME`: het Gmail-adres dat de mail verstuurt
-- `MAIL_PASSWORD`: een Gmail-app-wachtwoord (niet je gewone wachtwoord)
-- `MAIL_TO`: het adres dat de screenshot ontvangt
+- `MAIL_PASSWORD`: een API-sleutel van [Resend](https://resend.com) (de mail gaat via hun SMTP-server)
+- `MAIL_FROM`: het afzenderadres (zonder eigen domein: het testadres van Resend)
+- `MAIL_TO`: het adres dat de screenshot ontvangt (zonder eigen domein: het adres van je Resend-account)
 
 Handmatig testen: tabblad Actions → "Dagelijkse padel-screenshot" → Run workflow.

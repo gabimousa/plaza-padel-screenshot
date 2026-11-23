@@ -40,12 +40,12 @@ jobs:
         if: steps.shot.outcome == 'success'
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: smtp.gmail.com
+          server_address: smtp.resend.com
           server_port: 465
           secure: true
-          username: ${{ secrets.MAIL_USERNAME }}
+          username: resend   # bij Resend is de gebruikersnaam altijd letterlijk "resend"
           password: ${{ secrets.MAIL_PASSWORD }}
-          from: Padel screenshot <${{ secrets.MAIL_USERNAME }}>
+          from: Padel screenshot <${{ secrets.MAIL_FROM }}>
           to: ${{ secrets.MAIL_TO }}
           subject: Plaza Padel Enschede beschikbaarheid ${{ steps.dt.outputs.date }}
           body: |
@@ -58,12 +58,12 @@ jobs:
         if: steps.shot.outcome != 'success'
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: smtp.gmail.com
+          server_address: smtp.resend.com
           server_port: 465
           secure: true
-          username: ${{ secrets.MAIL_USERNAME }}
+          username: resend   # bij Resend is de gebruikersnaam altijd letterlijk "resend"
           password: ${{ secrets.MAIL_PASSWORD }}
-          from: Padel screenshot <${{ secrets.MAIL_USERNAME }}>
+          from: Padel screenshot <${{ secrets.MAIL_FROM }}>
           to: ${{ secrets.MAIL_TO }}
           subject: Plaza Padel Enschede beschikbaarheid ${{ steps.dt.outputs.date }} (mislukt)
           body: |
