@@ -1,8 +1,8 @@
-// Maakt een screenshot van de baanbeschikbaarheid van Plaza Padel Enschede op Playtomic.
+// Maakt een screenshot van de baanbeschikbaarheid van Plaza Padel Enschede (boekingspagina van Padel Casa).
 // Gebruik: node capture.js <uitvoerbestand.png>
 const { chromium } = require('playwright');
 
-const URL = 'https://playtomic.com/clubs/plaza-padel-enschede';
+const URL = 'https://www.padelcasa.com/pages/enschede#/court-booking';
 const out = process.argv[2] || 'screenshot.png';
 
 (async () => {
@@ -16,9 +16,9 @@ const out = process.argv[2] || 'screenshot.png';
   const page = await context.newPage();
 
   const response = await page.goto(URL, { waitUntil: 'domcontentloaded', timeout: 60000 });
-  // Een foutpagina (bijv. 403 van Playtomic) is geen geldige screenshot: stop met een fout.
+  // Een foutpagina (bijv. 403) is geen geldige screenshot: stop met een fout.
   if (!response || response.status() >= 400) {
-    throw new Error(`Playtomic gaf HTTP ${response ? response.status() : 'geen antwoord'}`);
+    throw new Error(`De pagina gaf HTTP ${response ? response.status() : 'geen antwoord'}`);
   }
   await page.waitForTimeout(4000);
 

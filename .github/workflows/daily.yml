@@ -50,7 +50,7 @@ jobs:
           body: |
             Dit is de dagelijkse capture van de baanbeschikbaarheid bij Plaza Padel Enschede, gemaakt om ${{ steps.dt.outputs.time }} uur.
             De vrije tijdsloten voor vanavond staan in de bijgevoegde screenshot.
-            Pagina: https://playtomic.com/clubs/plaza-padel-enschede
+            Pagina: https://www.padelcasa.com/pages/enschede#/court-booking
           attachments: plaza-padel-availability-${{ steps.dt.outputs.date }}.png
 
       - name: Mail bij fout
@@ -68,4 +68,4 @@ jobs:
           body: |
             De dagelijkse screenshot van Plaza Padel Enschede is vandaag (${{ steps.dt.outputs.time }} uur) mislukt.
             Zie de log op ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            Pagina: https://playtomic.com/clubs/plaza-padel-enschede
+            Pagina: https://www.padelcasa.com/pages/enschede#/court-booking

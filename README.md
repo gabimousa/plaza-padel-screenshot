@@ -1,7 +1,7 @@
 # Plaza Padel screenshot
 
 Maakt elke dag om 17:17 (Nederlandse tijd) een screenshot van de baanbeschikbaarheid van
-[Plaza Padel Enschede op Playtomic](https://playtomic.com/clubs/plaza-padel-enschede)
+[Plaza Padel Enschede (boekingspagina van Padel Casa)](https://www.padelcasa.com/pages/enschede#/court-booking)
 en mailt die als bijlage via [Resend](https://resend.com).
 
 ## Dagelijkse run op een eigen server (Docker)

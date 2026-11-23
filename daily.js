@@ -6,7 +6,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-const PAGE = 'https://playtomic.com/clubs/plaza-padel-enschede';
+const PAGE = 'https://www.padelcasa.com/pages/enschede#/court-booking';
 const ATTEMPTS = 3;
 const WAIT_MINUTES = 5;
 
