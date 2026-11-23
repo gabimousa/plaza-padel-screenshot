@@ -15,7 +15,7 @@ eigen server met Docker.
    ```
    RESEND_API_KEY=<API-sleutel van Resend>
    MAIL_FROM=<afzenderadres; zonder eigen domein het testadres van Resend>
-   MAIL_TO=<ontvanger; zonder eigen domein het adres van je Resend-account>
+   MAIL_TO=<ontvanger(s), gescheiden door komma's; zonder eigen domein alleen het adres van je Resend-account>
    ```
 
 3. Test met `sh run.sh`. Dat maakt de screenshot (maximaal 3 pogingen, 5 minuten ertussen)

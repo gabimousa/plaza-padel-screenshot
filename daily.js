@@ -17,7 +17,9 @@ function amsterdam(options) {
 }
 
 async function sendMail(subject, text, attachment) {
-  const body = { from: `Padel screenshot <${MAIL_FROM}>`, to: [MAIL_TO], subject, text };
+  // MAIL_TO mag meerdere adressen bevatten, gescheiden door komma's of puntkomma's.
+  const to = MAIL_TO.split(/[,;]/).map((a) => a.trim()).filter(Boolean);
+  const body = { from: `Padel screenshot <${MAIL_FROM}>`, to, subject, text };
   if (attachment) {
     body.attachments = [
       { filename: path.basename(attachment), content: fs.readFileSync(attachment).toString('base64') },
